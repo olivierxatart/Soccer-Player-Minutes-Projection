@@ -22,11 +22,35 @@ My data source was FBref. I collected player and team-level data from the 2018-1
 
 ---
 
-# Exploratory Data Analysis and Feature Selection
+## Dataset Description
 
-A major challenge in this project was deciding which variables should be used to predict future minutes. I purposely avoided highly position-specific performance metrics because they are not equally meaningful across all players. For example, goals are useful for evaluating forwards and attacking midfielders, but they are much less informative for center backs, fullbacks, or goalkeepers.
+My dataset was organized at the player-season level, meaning that each row represented one player in one league season.
 
-Because I wanted the model to generalize across positions, I focused on more position-agnostic indicators.
+Here is a snipit of the player data avaliable coming from the La Liga 2019-2020 season. Not all columns and rows from that file are in the image.
+
+![La Liga Player Data 2019-2020](La%20Liga%20Player%20Data%202019-2020.png)
+
+One issue I encountered was that some players transferred clubs during the same season. This created duplicate player-season rows because the same player could appear once for each club they played for. To solve this, I merged those rows into one player-season observation. For the player’s team, I assigned the club where the player played the most minutes that season.
+
+I also added team-level information from league tables for each season. This allowed me to include team context, such as team strength and performance, alongside individual player statistics.
+
+Here is the full leaderboard from the Serie A 2022-2023 season.
+
+![Italy 2022-23 Leaderboard](Italy%202022-23%20Leaderboard.png)
+
+---
+
+## Exploratory Data Analysis
+
+Before building the model, I explored the player-level data to better understand the distribution of minutes across player-seasons.
+
+![Minutes Distribution](Minutes%20Distribution.png)
+
+The distribution shows that most player-seasons involve relatively low minutes, while a smaller group of players accumulates very high minutes. This makes sense because most squads have many rotation players, substitutes, and players who appear only occasionally, while only a limited number of regular starters play close to a full season. The distribution is therefore right-skewed.
+
+
+---
+
 
 ## Selected Features
 
@@ -52,16 +76,6 @@ I used a time-based supervised learning approach because the goal of the project
 For example, if a young player played very few minutes in one season but became a regular starter the following season, the model should recognize that the more recent season is more relevant for predicting the player’s future role.
 
 To account for this, I created lagged variables, meaning that each player’s previous-season statistics were used as predictors for their next-season minutes.
-
----
-
-## Dataset Description
-
-My dataset was organized at the player-season level, meaning that each row represented one player in one league season.
-
-One issue I encountered was that some players transferred clubs during the same season. This created duplicate player-season rows because the same player could appear once for each club they played for. To solve this, I merged those rows into one player-season observation. For the player’s team, I assigned the club where the player played the most minutes that season.
-
-I also added team-level information from league tables for each season. This allowed me to include team context, such as team strength and performance, alongside individual player statistics.
 
 ---
 
@@ -125,6 +139,8 @@ R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
 | MAE | 675.81 |
 | RMSE | 829.56 |
 
+
+
 ---
 
 ## Performance by Position
@@ -138,11 +154,16 @@ R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
 
 ---
 
+## Performance by Position
+
+
+![\Feature Importances](Feature%20Importances.png)
+
+---
+
 ## Model Visualization
 
-![Minutes Model Results](Premier%20League%20Player%20Stats%20Predictions/Write-Up%20Images/Minutes%20Model%20Results.png)
 
-*Figure 1: Overall model performance and positional evaluation metrics.*
 
 ---
 
