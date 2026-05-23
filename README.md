@@ -1,6 +1,6 @@
 # Predicting Future Soccer Player Minutes Using Machine Learning
 
-## Abstract
+# Abstract
 
 This project develops a machine learning model to predict future soccer player minutes using seven seasons of data from the Premier League, La Liga, and Serie A. The model uses lagged playing-time statistics, age-related variables, and team-context metrics to forecast future league minutes across multiple positions. Predictive performance is evaluated using \(R^2\), mean absolute error (MAE), and root mean squared error (RMSE). The project also explores practical applications in squad planning, recruitment, and player development.
 
@@ -139,7 +139,17 @@ R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
 | MAE | 675.81 |
 | RMSE | 829.56 |
 
+The model achieved an \(R^2\) value of approximately \(0.301\), meaning that it explained about \(30.1\%\) of the variation in future player minutes. This suggests that the model was meaningfully predictive, but not highly accurate. In the context of soccer minutes prediction, this is still a useful result because future playing time is affected by many unpredictable factors, including injuries, transfers, tactical changes, suspensions, fixture congestion, and managerial preferences.
 
+The model’s MAE was approximately \(675.81\) minutes. This means that, on average, the model’s prediction was about \(676\) minutes away from a player’s actual season minutes total. Since a full league season contains a maximum of \(3420\) minutes, the average error was about:
+
+\[
+\frac{675.81}{3420} \approx 19.8\%
+\]
+
+of a full league season.
+
+The RMSE was \(829.56\), which was higher than the MAE. This shows that the model made some large prediction errors. These larger errors likely occurred in cases where a player’s role changed suddenly, such as a young player breaking into the first team, a starter losing their place, a player transferring clubs, or a player missing time due to injury.
 
 ---
 
@@ -152,24 +162,46 @@ R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}{\sum (y_i - \bar{y})^2}
 | MF | 283 | 0.259 | 646.53 | 798.60 |
 | FW | 134 | 0.315 | 632.69 | 771.64 |
 
+The model performed differently across positions. Goalkeepers had the highest \(R^2\), with a value of \(0.506\). This suggests that the model explained goalkeeper minutes better than it explained outfield player minutes. This makes sense because goalkeeper roles are usually more stable: teams often have a clear first-choice goalkeeper, and substitutions are rare compared with outfield positions.
+
+However, the goalkeeper sample size was much smaller, with only \(44\) test observations. Because of this, the goalkeeper result should be interpreted carefully. A smaller sample can make the performance estimate less stable.
+
+For outfield players, the model performed best for forwards by \(R^2\), with a value of \(0.315\). Midfielders and defenders were harder to predict, with \(R^2\) values of \(0.259\) and \(0.234\). This likely reflects the greater tactical flexibility and rotation among outfield positions. Defenders, midfielders, and forwards may be substituted more often, rotated based on opponent matchups, or affected by changes in formation.
+
+The model had the lowest MAE for forwards and midfielders. This means that although goalkeeper minutes had the highest explained variance, the average prediction error was smaller for some outfield positions. Overall, the positional results show that prediction accuracy depends heavily on role stability, sample size, and the tactical demands of each position.
+
 ---
 
-## Performance by Position
+## Feature Importance
 
+![Feature Importances](Feature%20Importances.png)
 
-![\Feature Importances](Feature%20Importances.png)
+The feature importance results show that previous playing time was the strongest predictor of future minutes. The most important feature was \(\text{Min}_{t-1}\), meaning minutes from the previous season. This supports the idea that past manager trust, availability, and squad role are highly informative when predicting future playing time.
 
----
+Age was the second most important feature, which suggests that the model captured some relationship between player development, peak years, and decline. This is important because minutes are not only determined by past role, but also by where a player is in their career arc.
 
-## Model Visualization
+The lagged minutes variables, including \(\text{Min}_{t-1}\), \(\text{Min}_{t-2}\), and \(\text{Min}_{t-3}\), were all among the most important features. This shows that the model relied strongly on a player’s historical usage across multiple seasons. The importance of \(\text{Min Trend}\) also suggests that changes in a player’s role over time were useful for predicting whether their future minutes would increase or decrease.
 
+Team-context variables, such as \(\text{On-Off}\), \(\text{PPM}\), \(\text{Team GA}\), and \(\text{Team GF}\), were also included among the important predictors. These features were less influential than previous minutes, but they still added context about team performance while the player was on the pitch. This suggests that the model was not only learning how much a player had played in the past, but also some information about the team environment surrounding those minutes.
+
+Overall, the feature importance results support the modeling approach. Future minutes were mostly driven by historical playing time, age, and recent role trends, while team-context variables provided additional predictive information.
 
 
 ---
 
 # Conclusions
 
-Although the model was not perfectly accurate, the results demonstrated that future player minutes can be predicted to a meaningful extent using historical playing-time and team-context variables. The model achieved an MAE value of approximately 675, meaning that on average the model was of 675 minutes with its predictions. Given the unpredictability of injuries, managerial changes, transfers, tactical adjustments, and player development, this level of predictive performance suggests that historical usage patterns still contain significant information about future playing time. The model performed especially well for outfield players, since outfield positions had a larger sample size than goalkeepers. Overall, the project demonstrates that machine learning and time-based feature engineering can provide useful insight into player usage trends, even in a highly unpredictable environment such as professional soccer.
+Overall, the model demonstrated that future player minutes can be predicted to a meaningful extent using historical playing-time variables, age, and team-context statistics. The model achieved an \(R^2\) of approximately \(0.301\), meaning it explained about \(30.1\%\) of the variation in future minutes. While this level of accuracy is not high enough to perfectly predict individual player seasons, it is still valuable because soccer minutes are influenced by many factors that are difficult to observe in public data.
+
+The model’s average error was approximately \(676\) minutes, or about \(19.8\%\) of a full \(3420\)-minute league season. This means the model can give a useful estimate of a player’s expected role, but it should not be treated as a precise prediction. In practical terms, the model is better suited for identifying broad usage patterns, such as likely starters, rotation players, and low-minute squad players, rather than predicting exact season-minute totals.
+
+The positional results showed that goalkeeper minutes were the most explainable by the model, likely because goalkeeper roles are more stable and less affected by substitutions. Outfield positions were more difficult to predict because defenders, midfielders, and forwards experience more rotation, tactical variation, and competition for places. This suggests that future versions of the model could benefit from separate position-specific models.
+
+The feature importance results showed that previous minutes were the strongest predictor of future minutes. This confirms that historical playing time is a strong proxy for manager trust, availability, and squad status. Age and minutes trend were also important, suggesting that the model captured both career-stage effects and changes in a player’s role over time.
+
+Despite its limitations, the model shows that machine learning and time-based feature engineering can provide useful insight into player usage trends. The results could support recruitment, squad planning, loan decisions, and player development analysis. However, the model should be used alongside scouting knowledge and contextual information because injuries, transfers, managerial changes, and sudden player development can cause large deviations from historical patterns.
+
+---
 
 # Example Players
 
