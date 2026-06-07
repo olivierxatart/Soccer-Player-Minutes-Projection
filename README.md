@@ -205,6 +205,21 @@ Despite its limitations, the model shows that machine learning and time-based fe
 
 # Example Players
 
+## Rodri Example
+
+![Rodri Example](Premier%20League%20Player%20Stats%20Predictions/Write-Up%20Images/Rodri%20Example.png)
+## Rodri Case Study
+
+Rodri was the model’s largest error in the test set. The model predicted that he would play approximately \(3001.3\) minutes in the 2024-25 season, but he only played \(73.0\) minutes, creating an absolute error of \(2928.3\) minutes.
+
+
+This example reveals one of the most important limitations of the model: it is strong at learning historical usage patterns, but it cannot account for unexpected injuries. Rodri’s input variables made him look like one of the safest high-minute predictions in the dataset. In the previous three seasons, he played \(3982\), \(4512\), and \(3765\) minutes, showing that he had been one of Manchester City’s most trusted and heavily used players. His strong points-per-match values and positive on-off metrics also suggested that he was highly important to the team when on the pitch.
+
+However, Rodri suffered a serious knee injury in September 2024, and Manchester City later confirmed that he had undergone surgery for an ACL and meniscus injury and would miss the rest of the season. Because the model did not include injury information, it had no way to anticipate such a sudden drop in playing time. As a result, the model treated Rodri as a stable elite midfielder whose future minutes would remain close to his previous workload.
+
+The Rodri case study shows that the model is most reliable when player roles remain relatively stable from season to season. It can identify players with strong historical usage, manager trust, and consistent roles, but it struggles with sudden shocks that are not present in the data. Long-term injuries, major tactical changes, transfers, and unexpected benchings can all cause a player’s actual minutes to differ greatly from the model’s prediction. Therefore, the model should be interpreted as a baseline projection of expected playing time rather than a complete forecast of every player’s season.
+
+---
 
 # Practical Applications
 
