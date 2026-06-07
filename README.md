@@ -209,7 +209,7 @@ Despite its limitations, the model shows that machine learning and time-based fe
 
 
 ## Rodri Case Study
-![Rodri Example](Write-Up%20Images/Rodri%20Example.png)
+![Rodri Example](Rodri%20Example.png)
 
 Rodri was the model’s largest error in the test set. The model predicted that he would play approximately \(3001.3\) minutes in the 2024-25 season, but he only played \(73.0\) minutes, creating an absolute error of \(2928.3\) minutes.
 
